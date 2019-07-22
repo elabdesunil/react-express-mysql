@@ -9,8 +9,12 @@ class Students extends Component {
   }
 
   async componentDidMount() {
+    console.log("try 1");
     const res = await fetch("/api/students");
+    console.log("try 2");
+    console.log("res ", res);
     const data = await res.json();
+    console.log("try");
     console.log(data);
     this.setState({
       students: data
@@ -19,7 +23,7 @@ class Students extends Component {
   render() {
     console.log(this.state.students);
     return this.state.students ? (
-      <div>{this.state.students.map(el => el.firstName)} </div>
+      <div>{this.state.students.map(el => el.firstName)} test </div>
     ) : (
       <div>Loading...</div>
     );

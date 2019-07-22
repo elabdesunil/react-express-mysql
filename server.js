@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const port = 4000;
+const port = 5000;
 
 // Middleware
 app.use(morgan("dev"));
