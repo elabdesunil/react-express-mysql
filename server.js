@@ -6,12 +6,15 @@ const port = 5000;
 // Middleware
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
 
 app.get("/api/students", (req, res) => {
-  const students = [{
+  const students = [
+    {
       id: 1,
       firstName: "Captain",
       lastName: "Fancy"
@@ -28,6 +31,35 @@ app.get("/api/students", (req, res) => {
     }
   ];
   res.send(students);
+});
+
+const pets = [
+  {
+    id: 1,
+    name: "gary"
+  },
+  {
+    id: 2,
+    name: "jerry"
+  },
+  {
+    id: 3,
+    name: "tom"
+  }
+];
+app.get("/api/pets", (req, res) => {
+  // res.send(console.log(req.params));
+  // res.send(pets);
+});
+
+app.get("/api/pets/:id", (req, res) => {
+  pets.forEach(pet =>
+    res.send(
+      pet.id === parseInt(req.params.id)
+        ? pet.id + ", " + pet.name
+        : req.params.id + " not found"
+    )
+  );
 });
 
 // Server
