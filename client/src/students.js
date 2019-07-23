@@ -23,7 +23,9 @@ class Students extends Component {
   render() {
     console.log(this.state.students);
     return this.state.students ? (
-      <div>{this.state.students.map(el => el.firstName)} test </div>
+      <div>{this.state.students.map(el =>{
+        return(<li>ID:{el.id} First Name: {el.firstName} Last Name: {el.lastName}</li>)
+      })} test </div>
     ) : (
       <div>Loading...</div>
     );
