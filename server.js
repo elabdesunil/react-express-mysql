@@ -35,7 +35,14 @@ app.get('/employees/:id', (req, res) => {
 app.post('/employees', (req, res) => {
   let emp = req.body;
   let sql = 'SET @EmpID = ?; SET @Name =?; SET @EmpCode =?; SET @Salary = ?;\
-  CALL EmployeeAddOrEdit(@EmpID, @Name, @EmpCode, @Salary'
+  CALL EmployeeAddOrEdit(@EmpID, @Name, @EmpCode, @Salary)';
+  mysqlConnection.query(
+    sql, [emp.EmpID, emp.Name, emp.EmpCode, emp.Salary],
+    (err, rows, field) => {
+      if (!err) res.send('success');
+      else console.log(err)
+    }
+  )
 
 })
 
