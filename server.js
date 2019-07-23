@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const port = 5000;
+const mysql = require('mysql')
 
 // Middleware
 app.use(morgan("dev"));
@@ -12,57 +13,62 @@ app.use(
   })
 );
 
-app.get("/api/students", (req, res) => {
-  const students = [
-    {
-      id: 1,
-      firstName: "Captain",
-      lastName: "Fancy"
-    },
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Buttercup"
-    },
-    {
-      id: 1,
-      firstName: "Dusty",
-      lastName: "Trail"
+app.get("/employees", (req, res) => {
+  mysqlConnection.query('SELECT * FROM Employee', (err, rows, field) => {
+    if (!err) res.send(rows);
+    else console.log(err);
+  })
+
+});
+
+app.get('/employees/:id', (req, res) => {
+  mysqlConnection.query(
+    'SELECT * FROM Employee WHERE EmpID = ?',
+    [req.params.id],
+    (err, rows, field) => {
+      if (!err) res.send(rows);
+      else console.log(err);
     }
-  ];
-  res.send(students);
-});
+  )
+})
 
-const pets = [
-  {
-    id: 1,
-    name: "gary"
-  },
-  {
-    id: 2,
-    name: "jerry"
-  },
-  {
-    id: 3,
-    name: "tom"
-  }
-];
-app.get("/api/pets", (req, res) => {
-  // res.send(console.log(req.params));
-  // res.send(pets);
-});
+app.post('/employees', (req, res) => {
+  let emp = req.body;
+  let sql = 'SET @EmpID = ?; SET @Name =?; SET @EmpCode =?; SET @Salary = ?;\
+  CALL EmployeeAddOrEdit(@EmpID, @Name, @EmpCode, @Salary'
 
-app.get("/api/pets/:id", (req, res) => {
-  pets.forEach(pet =>
-    res.send(
-      pet.id === parseInt(req.params.id)
-        ? pet.id + ", " + pet.name
-        : req.params.id + " not found"
-    )
-  );
-});
+})
 
-// Server
+app.delete('/employees/:id', (req, res) => {
+  mysqlConnection.query(
+    'DELETE FROM Employee WHERE EmpID =?',
+    [req.params.id],
+    (err, rows, field) => {
+      if (!err) res.send('Delete Successfully');
+      else console.log(err);
+    }
+  )
+})
+
+
+// starting our Server
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
+
+//connect to mySQL
+
+const mysqlConnection = mysql.createConnection({
+  host: '10.9.3.218',
+  user: 'TWStudent',
+  password: 'TechWorks!',
+  database: 'employeedb',
+  multipleStatements: true
+})
+
+mysqlConnection.connect(err => {
+  if (!err) console.log("DB connection succeeded");
+  else {
+    console.log("DB connection failed. Error:" + JSON.stringify(err, undefined, 2))
+  }
+})
