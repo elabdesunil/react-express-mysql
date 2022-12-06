@@ -21,7 +21,7 @@
   "homepage": "https://github.com/sunilale0/react-express-boilerplate#readme",
   "dependencies": {
     "concurrently": "^4.1.1",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "morgan": "^1.9.1",
     "mysql": "^2.17.1"
   },
